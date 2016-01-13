@@ -11,7 +11,6 @@ import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerWrapper;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.el.EvaluationException;
 import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PreRenderViewEvent;
@@ -20,7 +19,6 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@SuppressWarnings("deprecation")
 public abstract class AbstractAjaxExceptionHandler extends ExceptionHandlerWrapper {
 
 	private ExceptionHandler wrapped;
@@ -145,7 +143,7 @@ public abstract class AbstractAjaxExceptionHandler extends ExceptionHandlerWrapp
 
 	protected Throwable getRootException(Throwable exception) {
 		Throwable cause;
-		while ((cause = exception.getCause()) != null && (exception instanceof FacesException || exception instanceof EvaluationException)) {
+		while ((cause = exception.getCause()) != null) {
 			exception = cause;
 		}
 
