@@ -25,8 +25,6 @@ public @interface NotBlankInSize {
 
     Class<? extends Payload>[] payload() default {};
     
-    String value();
-    
     int min() default 1;
     
     int max() default Integer.MAX_VALUE;
