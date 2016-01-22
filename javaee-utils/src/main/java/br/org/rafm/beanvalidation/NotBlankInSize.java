@@ -15,22 +15,26 @@ import javax.validation.Payload;
 
 @Target({FIELD, METHOD, TYPE, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-@Constraint(validatedBy = OnlyOneFieldNotNullValidator.class)
+@Constraint(validatedBy = NotBlankInSizeValidator.class)
 @Documented
-public @interface OnlyOneFieldNotNull {
+public @interface NotBlankInSize {
 
-    String message() default "{br.org.rafm.constraints.OnlyOneFieldNotNull}";
+    String message() default "{br.org.rafm.constraints.NotBlankInSize}";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
     
-    String[] value();
+    String value();
+    
+    int min() default 1;
+    
+    int max() default Integer.MAX_VALUE;
     
 	@Target({TYPE, ANNOTATION_TYPE})
 	@Retention(RUNTIME)
 	@Documented
 	@interface List {
-		OnlyOneFieldNotNull[] value();
+		NotBlankInSize[] value();
 	}
 }
