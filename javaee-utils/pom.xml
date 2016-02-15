@@ -6,8 +6,6 @@
 	<artifactId>javaee-utils</artifactId>
 	<version>1.0.0</version>
 	
-	<packaging>jar</packaging>
-	
 	<developers>
 		<developer>
 			<name>Rafael Augusto Felix Maia</name>
