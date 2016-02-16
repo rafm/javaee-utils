@@ -1,9 +1,11 @@
-package br.org.rafm.beanvalidation;
+package br.org.rafm.validation;
 
 import java.lang.reflect.Field;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+
+import br.org.rafm.validation.constraints.OnlyOneFieldNotNull;
 
 public class OnlyOneFieldNotNullValidator implements ConstraintValidator<OnlyOneFieldNotNull, Object> {
 

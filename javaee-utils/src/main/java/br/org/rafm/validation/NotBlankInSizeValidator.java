@@ -1,7 +1,9 @@
-package br.org.rafm.beanvalidation;
+package br.org.rafm.validation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+
+import br.org.rafm.validation.constraints.NotBlankInSize;
 
 public class NotBlankInSizeValidator implements ConstraintValidator<NotBlankInSize, Object> {
 

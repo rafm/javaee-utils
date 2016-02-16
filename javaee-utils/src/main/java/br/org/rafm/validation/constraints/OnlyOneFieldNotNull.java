@@ -1,4 +1,4 @@
-package br.org.rafm.beanvalidation;
+package br.org.rafm.validation.constraints;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.FIELD;
@@ -13,26 +13,26 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
+import br.org.rafm.validation.OnlyOneFieldNotNullValidator;
+
 @Target({FIELD, METHOD, TYPE, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-@Constraint(validatedBy = NotBlankInSizeValidator.class)
+@Constraint(validatedBy = OnlyOneFieldNotNullValidator.class)
 @Documented
-public @interface NotBlankInSize {
+public @interface OnlyOneFieldNotNull {
 
-    String message() default "{br.org.rafm.constraints.NotBlankInSize}";
+    String message() default "{br.org.rafm.validation.constraints.OnlyOneFieldNotNull}";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
     
-    int min() default 1;
-    
-    int max() default Integer.MAX_VALUE;
+    String[] value();
     
 	@Target({TYPE, ANNOTATION_TYPE})
 	@Retention(RUNTIME)
 	@Documented
 	@interface List {
-		NotBlankInSize[] value();
+		OnlyOneFieldNotNull[] value();
 	}
 }

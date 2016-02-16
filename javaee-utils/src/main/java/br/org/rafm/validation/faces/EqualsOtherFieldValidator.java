@@ -1,4 +1,4 @@
-package br.org.rafm.jsf;
+package br.org.rafm.validation.faces;
 
 import java.text.MessageFormat;
 import java.util.MissingResourceException;
@@ -13,7 +13,7 @@ import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
-@FacesValidator("EqualsOtherFieldValidator")
+@FacesValidator("rafm.EqualsOtherFieldValidator")
 public final class EqualsOtherFieldValidator implements Validator {
 	
 	private ResourceBundle messageBundle;
