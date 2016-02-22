@@ -19,6 +19,15 @@ import javax.mail.internet.MimeMessage;
 @ApplicationScoped
 public class JSFEmailService {
 
+	/**
+	 * 
+	 * @param mailSession
+	 * @param remetente
+	 * @param assunto
+	 * @param htmlViewId
+	 * @param destinatarios
+	 * @throws MessagingException
+	 */
 	public void enviarEmailHTML(final Session mailSession, final String remetente, final String assunto, final String htmlViewId, final String... destinatarios) throws MessagingException {
 		try {
 			final MimeMessage m = new MimeMessage(mailSession);
