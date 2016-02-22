@@ -24,11 +24,38 @@ public class JSFEmailService {
 	 * @param mailSession
 	 * @param remetente
 	 * @param assunto
-	 * @param htmlViewId
+	 * @param htmlPage
 	 * @param destinatarios
 	 * @throws MessagingException
 	 */
-	public void enviarEmailHTML(final Session mailSession, final String remetente, final String assunto, final String htmlViewId, final String... destinatarios) throws MessagingException {
+	public void enviarEmail(final Session mailSession, final String remetente, final String assunto, final String htmlPageCode, final String... destinatarios) throws MessagingException {
+		enviarEmailHTML(mailSession, remetente, assunto, true, htmlPageCode, destinatarios);
+	}
+	
+	/**
+	 * 
+	 * @param mailSession
+	 * @param remetente
+	 * @param assunto
+	 * @param htmlPage
+	 * @param destinatarios
+	 * @throws MessagingException
+	 */
+	public void enviarEmailHTML(final Session mailSession, final String remetente, final String assunto, final String htmlPageId, final String... destinatarios) throws MessagingException {
+		enviarEmailHTML(mailSession, remetente, assunto, false, htmlPageId, destinatarios);
+	}
+	
+	/**
+	 * 
+	 * @param mailSession
+	 * @param remetente
+	 * @param assunto
+	 * @param isRendered
+	 * @param htmlPage
+	 * @param destinatarios
+	 * @throws MessagingException
+	 */
+	private void enviarEmailHTML(final Session mailSession, final String remetente, final String assunto, final boolean isRendered, final String htmlPage, final String... destinatarios) throws MessagingException {
 		try {
 			final MimeMessage m = new MimeMessage(mailSession);
 			
@@ -40,7 +67,7 @@ public class JSFEmailService {
 				to.add(new InternetAddress(address));
 			m.setRecipients(Message.RecipientType.TO, to.toArray(new InternetAddress[to.size()]));
 			
-	        m.setContent(getHTMLPageContent(htmlViewId), "text/html; charset=UTF-8");
+	        m.setContent(isRendered ? htmlPage : getHTMLPageContent(htmlPage), "text/html; charset=UTF-8");
 	        m.setSentDate(new Date());
 	        
 	        Transport.send(m);
