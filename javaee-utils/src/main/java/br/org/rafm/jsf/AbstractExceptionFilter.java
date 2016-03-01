@@ -3,6 +3,7 @@ package br.org.rafm.jsf;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import javax.ejb.EJBAccessException;
 import javax.faces.FacesException;
 import javax.faces.el.EvaluationException;
 import javax.servlet.Filter;
@@ -30,9 +31,15 @@ public abstract class AbstractExceptionFilter implements Filter {
 		} catch (FileNotFoundException e) {
 			httpResponse.sendError(HttpServletResponse.SC_NOT_FOUND, httpRequest.getRequestURI());
 		} catch (ServletException e) {
-			final Throwable exception = getRootException(e.getRootCause());
-			logException(exception);
-			throw new ServletException(exception);
+			final Throwable rootFacesException = getRootFacesException(e.getRootCause());
+			final Throwable rootException = getRootException(rootFacesException);
+			
+			if (rootException instanceof EJBAccessException) {
+				httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, httpRequest.getRequestURI());
+			} else {
+				logException(rootFacesException);
+				throw new ServletException(rootFacesException);
+			}
 		}
 	}
 
@@ -41,12 +48,19 @@ public abstract class AbstractExceptionFilter implements Filter {
 
 	protected abstract void logException(Throwable exception);
 	
-	protected Throwable getRootException(Throwable exception) {
+	protected Throwable getRootFacesException(Throwable exception) {
 		Throwable cause;
 		while ((cause = exception.getCause()) != null && (exception instanceof FacesException || exception instanceof EvaluationException)) {
 			exception = cause;
 		}
+		return exception;
+	}
 
+	private Throwable getRootException(Throwable exception) {
+		Throwable cause;
+		while ((cause = exception.getCause()) != null) {
+			exception = cause;
+		}
 		return exception;
 	}
 }
