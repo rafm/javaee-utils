@@ -3,9 +3,9 @@ package br.org.rafm.jsf;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import javax.ejb.EJBAccessException;
+import javax.ejb.EJBException;
+import javax.el.ELException;
 import javax.faces.FacesException;
-import javax.faces.el.EvaluationException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -15,7 +15,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@SuppressWarnings("deprecation")
 public abstract class AbstractExceptionFilter implements Filter {
 
 	@Override
@@ -31,15 +30,11 @@ public abstract class AbstractExceptionFilter implements Filter {
 		} catch (FileNotFoundException e) {
 			httpResponse.sendError(HttpServletResponse.SC_NOT_FOUND, httpRequest.getRequestURI());
 		} catch (ServletException e) {
-			final Throwable rootFacesException = getRootFacesException(e.getRootCause());
-			final Throwable rootException = getRootException(rootFacesException);
+			final Throwable unwrappedException = unwrap(e.getRootCause());
 			
-			if (rootException instanceof EJBAccessException) {
-				httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, httpRequest.getRequestURI());
-			} else {
-				logException(rootFacesException);
-				throw new ServletException(rootFacesException);
-			}
+			logException(unwrappedException);
+			
+			throw new ServletException(e.getMessage(), unwrappedException);
 		}
 	}
 
@@ -47,18 +42,14 @@ public abstract class AbstractExceptionFilter implements Filter {
 	public void destroy() {}
 
 	protected abstract void logException(Throwable exception);
-	
-	protected Throwable getRootFacesException(Throwable exception) {
-		Throwable cause;
-		while ((cause = exception.getCause()) != null && (exception instanceof FacesException || exception instanceof EvaluationException)) {
-			exception = cause;
-		}
-		return exception;
-	}
 
-	private Throwable getRootException(Throwable exception) {
+	protected boolean isTypeToUnwrap(final Throwable exception) {
+		return exception instanceof FacesException || exception instanceof ELException || exception instanceof EJBException;
+	}
+	
+	private Throwable unwrap(Throwable exception) {
 		Throwable cause;
-		while ((cause = exception.getCause()) != null) {
+		while (isTypeToUnwrap(exception) && (cause = exception.getCause()) != null) {
 			exception = cause;
 		}
 		return exception;
