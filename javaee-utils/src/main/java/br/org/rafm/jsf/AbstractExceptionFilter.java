@@ -30,18 +30,12 @@ public abstract class AbstractExceptionFilter implements Filter {
 		} catch (FileNotFoundException e) {
 			httpResponse.sendError(HttpServletResponse.SC_NOT_FOUND, httpRequest.getRequestURI());
 		} catch (ServletException e) {
-			final Throwable unwrappedException = unwrap(e.getRootCause());
-			
-			logException(unwrappedException);
-			
-			throw new ServletException(e.getMessage(), unwrappedException);
+			throw new ServletException(e.getMessage(), unwrap(e.getRootCause()));
 		}
 	}
 
 	@Override
 	public void destroy() {}
-
-	protected abstract void logException(Throwable exception);
 
 	protected boolean isTypeToUnwrap(final Throwable exception) {
 		return exception instanceof FacesException || exception instanceof ELException || exception instanceof EJBException;

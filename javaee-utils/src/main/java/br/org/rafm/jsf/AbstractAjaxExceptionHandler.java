@@ -60,18 +60,27 @@ public abstract class AbstractAjaxExceptionHandler extends ExceptionHandlerWrapp
 	@Override
 	public void handle() throws FacesException {
 		try {
-			final FacesContext facesContext = FacesContext.getCurrentInstance();
 			final Iterator<ExceptionQueuedEvent> iterator = getUnhandledExceptionQueuedEvents().iterator();
 			
-			if (isAjaxRequest(facesContext) && iterator.hasNext()) { // TODO !(firstException instanceof AbortProcessingException)
-				final Throwable firstException = iterator.next().getContext().getException();
+			if (iterator.hasNext()) { // TODO !(firstException instanceof AbortProcessingException)
+				final FacesContext facesContext = FacesContext.getCurrentInstance();
 				
-				if (isResponseCommitted(facesContext)) {
-					logAndRemoveExceptions(getUnhandledExceptionQueuedEvents().iterator());
-				} else if (isRedirectionalException(firstException)) {
-					redirectPage(facesContext, getUnhandledExceptionQueuedEvents().iterator());
-				} else {
-					showMessages(facesContext, getUnhandledExceptionQueuedEvents().iterator());
+				if (isAjaxRequest(facesContext)) {
+					if (isResponseCommitted(facesContext)) {
+						logAndRemoveExceptions(iterator);
+					} else {
+						final Throwable firstException = getUnhandledExceptionQueuedEvents().iterator().next().getContext().getException();
+						
+						if (isRedirectionalException(firstException)) {
+							redirectPage(facesContext, iterator);
+						} else {
+							showMessages(facesContext, iterator);
+						}
+					}
+				} else if (logExceptionFromNonAjaxRequests()) {
+					final Throwable firstException = iterator.next().getContext().getException();
+					
+					logException(firstException);
 				}
 			}
 		} catch (Exception e) {
@@ -159,4 +168,6 @@ public abstract class AbstractAjaxExceptionHandler extends ExceptionHandlerWrapp
 	protected abstract List<FacesMessage> getFacesMessages(final Throwable exception);
 	
 	protected abstract void logException(final Throwable exception);
+	
+	protected abstract boolean logExceptionFromNonAjaxRequests();
 }
