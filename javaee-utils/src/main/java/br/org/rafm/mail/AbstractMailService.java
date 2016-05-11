@@ -1,8 +1,6 @@
 package br.org.rafm.mail;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -15,22 +13,32 @@ public abstract class AbstractMailService {
 
 	/**
 	 * @param mailSession
-	 * @param from
 	 * @param subject
 	 * @param htmlPageContent
-	 * @param toGroup
+	 * @param addresses
 	 * @throws MessagingException 
 	 */
-	protected void sendHTMLMail(final Session mailSession, final String from, final String subject, final String htmlPageContent, final String... toGroup) throws MessagingException {
+	protected void sendHTMLMail(final Session mailSession, final String subject, final String htmlPageContent, final String... addresses) throws MessagingException {
+		sendHTMLMail(mailSession.getProperty("mail.smtp.user"), mailSession, subject, htmlPageContent, addresses);
+	}
+
+	/**
+	 * @param from
+	 * @param mailSession
+	 * @param subject
+	 * @param htmlPageContent
+	 * @param addresses
+	 * @throws MessagingException 
+	 */
+	protected void sendHTMLMail(final String from, final Session mailSession, final String subject, final String htmlPageContent, final String... addresses) throws MessagingException {
 		final MimeMessage m = new MimeMessage(mailSession);
 		
 		m.setFrom(from);
+        m.setReplyTo(new InternetAddress[] {new InternetAddress(from)});
         m.setSubject(subject);
 		
-		final List<InternetAddress> to = new ArrayList<>();
-		for (final String address : toGroup)
-			to.add(new InternetAddress(address));
-		m.setRecipients(Message.RecipientType.TO, to.toArray(new InternetAddress[to.size()]));
+		for (final String address : addresses)
+			m.addRecipients(Message.RecipientType.TO, address);
 		
         m.setContent(htmlPageContent, "text/html; charset=UTF-8");
         m.setSentDate(new Date());
