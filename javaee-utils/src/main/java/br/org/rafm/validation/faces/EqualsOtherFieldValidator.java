@@ -14,7 +14,7 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
 @FacesValidator("rafm.EqualsOtherFieldValidator")
-public final class EqualsOtherFieldValidator implements Validator {
+public class EqualsOtherFieldValidator implements Validator {
 	
 	private ResourceBundle messageBundle;
 	
