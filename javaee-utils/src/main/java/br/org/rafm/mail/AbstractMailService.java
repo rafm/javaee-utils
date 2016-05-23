@@ -33,8 +33,10 @@ public abstract class AbstractMailService {
 	protected void sendHTMLMail(final String from, final Session mailSession, final String subject, final String htmlPageContent, final String... addresses) throws MessagingException {
 		final MimeMessage m = new MimeMessage(mailSession);
 		
-		m.setFrom(from);
-        m.setReplyTo(new InternetAddress[] {new InternetAddress(from)});
+		if (from != null) {
+			m.setFrom(from);
+			m.setReplyTo(new InternetAddress[] {new InternetAddress(from)});
+		}
         m.setSubject(subject);
 		
 		for (final String address : addresses)
