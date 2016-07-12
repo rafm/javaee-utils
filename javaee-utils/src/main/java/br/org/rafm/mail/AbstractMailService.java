@@ -19,7 +19,7 @@ public abstract class AbstractMailService {
 	 * @throws MessagingException 
 	 */
 	protected void sendHTMLMail(final Session mailSession, final String subject, final String htmlPageContent, final String... addresses) throws MessagingException {
-		sendHTMLMail(mailSession.getProperty("mail.smtp.user"), mailSession, subject, htmlPageContent, addresses);
+		sendHTMLMail(null, mailSession, subject, htmlPageContent, addresses);
 	}
 
 	/**
