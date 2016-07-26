@@ -13,15 +13,15 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import br.org.rafm.validation.NotBlankInSizeValidator;
+import br.org.rafm.validation.NotBlankValidator;
 
 @Target({FIELD, METHOD, TYPE, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-@Constraint(validatedBy = NotBlankInSizeValidator.class)
+@Constraint(validatedBy = NotBlankValidator.class)
 @Documented
-public @interface NotBlankInSize {
+public @interface NotBlank {
 
-    String message() default "{br.org.rafm.validation.constraints.NotBlankInSize}";
+    String message() default "{br.org.rafm.validation.constraints.NotBlank}";
 
     Class<?>[] groups() default {};
 
@@ -29,12 +29,10 @@ public @interface NotBlankInSize {
     
     int min() default 1;
     
-    int max() default Integer.MAX_VALUE;
-    
 	@Target({TYPE, ANNOTATION_TYPE})
 	@Retention(RUNTIME)
 	@Documented
 	@interface List {
-		NotBlankInSize[] value();
+		NotBlank[] value();
 	}
 }

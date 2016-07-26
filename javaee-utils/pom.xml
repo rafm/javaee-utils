@@ -77,23 +77,6 @@
 		<scope>provided</scope>
 	</dependency>
 	
-	<!-- Spring Security -->
-		<!-- Web -->
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-web</artifactId>
-			<version>4.0.3.RELEASE</version>
-			<scope>provided</scope>
-		</dependency>
-		
-	<!-- Log4J2 -->
-	<dependency>
-		<groupId>org.apache.logging.log4j</groupId>
-		<artifactId>log4j-web</artifactId>
-		<version>2.3</version>
-		<scope>provided</scope>
-	</dependency>
-	
 	<!-- Testes unitários -->
 		<!-- JUnit -->
 		<dependency>
