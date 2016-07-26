@@ -3,15 +3,17 @@ package br.org.rafm.validation;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import br.org.rafm.validation.constraints.NotBlank;
+import br.org.rafm.validation.constraints.NotBlankWithSize;
 
-public class NotBlankValidator implements ConstraintValidator<NotBlank, Object> {
+public class NotBlankWithSizeValidator implements ConstraintValidator<NotBlankWithSize, Object> {
 
 	private int min;
+	private int max;
 	
 	@Override
-	public void initialize(final NotBlank notBlankInSize) {
-		min = notBlankInSize.min() < 1 ? 1 : notBlankInSize.min();
+	public void initialize(final NotBlankWithSize notBlankWithSize) {
+		min = notBlankWithSize.min() < 1 ? 1 : notBlankWithSize.min();
+		max = notBlankWithSize.max();
 	}
 	
 	@Override
@@ -22,7 +24,7 @@ public class NotBlankValidator implements ConstraintValidator<NotBlank, Object> 
 		
 		final int length = ((String) object).trim().length();
 		
-		if (length < min) {
+		if (length < min || length > max) {
 			return false;
 		}
 		
