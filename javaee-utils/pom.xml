@@ -4,7 +4,7 @@
 	<name>Rafael Augusto - Utilitários para aplicações Java EE</name>
 	<groupId>br.org.rafm</groupId>
 	<artifactId>javaee-utils</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.0-beta</version>
 	
 	<developers>
 		<developer>

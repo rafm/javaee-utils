@@ -13,10 +13,10 @@ public final class JSFUtil {
 	 * @return the html page content
 	 * @throws IOException
 	 */
-	public static String getHTMLPageContent(final String viewId) throws IOException {
+	public static String getHTMLPageContent(final String htmlPageId) throws IOException {
 		final StringBuilder sb = new StringBuilder();
 		
-		try (final BufferedInputStream bis = new BufferedInputStream(FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream(viewId+".html"))) {
+		try (final BufferedInputStream bis = new BufferedInputStream(FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream(htmlPageId+".html"))) {
 			final byte[] buffer = new byte[1024];
 			
 			int nBytesRead;

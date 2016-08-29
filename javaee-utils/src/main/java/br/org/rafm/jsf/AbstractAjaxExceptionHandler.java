@@ -1,5 +1,7 @@
 package br.org.rafm.jsf;
 
+import static br.org.rafm.exception.Exceptions.unwrap;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -16,6 +18,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PreRenderViewEvent;
 import javax.faces.view.ViewDeclarationLanguage;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -144,19 +147,10 @@ public abstract class AbstractAjaxExceptionHandler extends ExceptionHandlerWrapp
 			
 			logException(exception);
 			
-			for (FacesMessage facesMessage : getFacesMessages(getRootException(exception))) {
+			for (FacesMessage facesMessage : getFacesMessages(unwrap(exception, (ServletContext) facesContext.getExternalContext().getContext()))) {
 				facesContext.addMessage(null, facesMessage);
 			}
 		}
-	}
-
-	protected Throwable getRootException(Throwable exception) {
-		Throwable cause;
-		while ((cause = exception.getCause()) != null) {
-			exception = cause;
-		}
-
-		return exception;
 	}
 
 	protected abstract boolean isRedirectionalException(final Throwable firstException);
