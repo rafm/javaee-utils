@@ -42,6 +42,7 @@ public abstract class AbstractMailService {
 		for (final String address : addresses)
 			m.addRecipients(Message.RecipientType.TO, address);
 		
+		// TODO Criar parâmetro para charset
         m.setContent(htmlPageContent, "text/html; charset=UTF-8");
         m.setSentDate(new Date());
         
