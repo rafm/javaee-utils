@@ -1,4 +1,4 @@
-package br.org.rafm.jsf;
+package br.org.rafm.faces;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;

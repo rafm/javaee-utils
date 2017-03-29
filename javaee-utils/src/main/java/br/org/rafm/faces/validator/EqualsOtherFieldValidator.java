@@ -1,4 +1,4 @@
-package br.org.rafm.validation.faces;
+package br.org.rafm.faces.validator;
 
 import java.text.MessageFormat;
 import java.util.MissingResourceException;
